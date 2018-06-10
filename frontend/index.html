@@ -1,1 +1,82 @@
-ok
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>Frontend application</h1>
+<input type="button" name="login" id="login" value="login"><br><br>
+<input type="button" name="logout" id="logout" value="logout"><br><br>
+<input type="button" name="myprofile" id="profile" value="profile"><br><br>
+
+<p id="info"></p>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+
+   var baseUrl ='http://localhost:3000/';
+
+   var loginParams = {
+       username:'test',
+       password:'test'
+   }
+
+   $(document).ready(function(){
+
+      $('#login').click(function(){
+        $.ajax({
+                url: baseUrl+'auth/login',
+                data: loginParams,
+                type: 'POST',
+                dataType: 'json',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success:function(data){
+                    console.log(data);
+                   $('#info').text(JSON.stringify(data));
+                }
+            });
+      });
+
+      $('#logout').click(function(){
+        $.ajax({
+                url: baseUrl+'auth/logout',
+                type: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success:function(data){
+                    console.log(data);
+                   $('#info').text(JSON.stringify(data));
+                }
+            });
+      });
+
+      $('#profile').click(function(){
+        $.ajax({
+                url: baseUrl+'auth/me',
+                type: 'GET',
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success:function(data){
+                    console.log(data);
+                   $('#info').text(JSON.stringify(data));
+                },
+                error:function(error){
+                    console.log(error.responseText);
+                    $('#info').text(error.responseText);
+                }
+            });
+      });
+
+
+  });
+</script>
+</body>
+</html>
